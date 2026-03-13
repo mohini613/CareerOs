@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { SparklesCore } from "../components/ui/sparkles";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -35,13 +36,25 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-blush-200 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-crimson-900">
-            CareerOS
-          </h2>
-          <p className="mt-2 text-center text-sm text-crimson-700">
+<div className="h-screen relative flex items-center justify-center overflow-hidden bg-black">
+  
+  <div className="absolute inset-0">
+    <SparklesCore
+      background="transparent"
+      minSize={0.5}
+      maxSize={1.2}
+      particleDensity={120}
+      className="w-full h-full"
+      particleColor="#ffffff"
+      speed={1}
+    />
+  </div>     
+<div className="relative z-20 max-w-md w-full space-y-8">    
+      <div>
+<h2 className="mt-6 text-center text-6xl font-bold text-white font-times">
+  CareerOS
+</h2>            
+          <p className="mt-2 text-center text-1xl font text-white font-times">
             Sign in to your account
           </p>
         </div>
@@ -82,7 +95,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-blush-100 bg-crimson-900 hover:bg-crimson-800 focus:outline-none disabled:bg-crimson-700"
+              className="w-full flex justify-center py-2 px-4 border border-black text-sm font-medium rounded-md text-blush-100 bg-crimson-900 hover:bg-crimson-800 focus:outline-none disabled:bg-crimson-700"
             >
               {loading ? 'Signing in...' : 'Sign in'}
             </button>

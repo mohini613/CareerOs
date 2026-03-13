@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-
+import { SparklesCore } from "../components/ui/sparkles";
 const Register = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -37,13 +37,26 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+<div className="h-screen relative flex items-center justify-center overflow-hidden bg-black">
+
+  <div className="absolute inset-0">
+    <SparklesCore
+      background="transparent"
+      minSize={0.5}
+      maxSize={1.2}
+      particleDensity={120}
+      className="w-full h-full"
+      particleColor="#faf4f4"
+      speed={1}
+    />
+  </div>
+
+  <div className="relative z-20 max-w-md w-full space-y-8">      <div className="max-w-md w-full space-y-8">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            CareerOS
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <h2 className="mt-6 text-center text-6xl font-bold text-white font-times">
+  CareerOS
+</h2>
+          <p className="mt-2 text-center text-1xl font text-white font-times">
             Create your account
           </p>
         </div>
@@ -59,7 +72,7 @@ const Register = () => {
                 name="firstName"
                 type="text"
                 required
-                className="px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="px-3 py-2 border border-gray-300 placeholder-white-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="First name"
                 value={formData.firstName}
                 onChange={handleChange}
@@ -104,13 +117,14 @@ const Register = () => {
           </button>
 
           <div className="text-center">
-            <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+            <Link to="/login" className="font-medium text-white hover:text-indigo-500">
               Already have an account? Sign in
             </Link>
           </div>
         </form>
       </div>
     </div>
+  </div>
   );
 };
 

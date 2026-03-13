@@ -1,5 +1,6 @@
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { SparklesCore } from "../components/ui/sparkles";
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
@@ -21,8 +22,25 @@ const Dashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-bold text-gray-900">CareerOS</h1>
-            </div>
+
+<div className="relative flex items-center justify-center">
+  <SparklesCore
+    background="transparnt"
+    minSize={6.5}
+    maxSize={1}
+    particleDensity={200}
+    className="absolute w-full h-full"
+    particleColor="#1810b9"
+        particleColor2="#10b924"
+            particleColor3="#b91086"
+
+
+  />
+
+  <h1 className="relative z-20 text-5xl font-bold text-gray-900 ">
+    CareerOS
+  </h1>
+</div>            </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-700">
                 {user?.firstName} {user?.lastName}

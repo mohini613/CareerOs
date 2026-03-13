@@ -3,10 +3,19 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    
   ],
+  
   darkMode: 'class',
   theme: {
-    extend: {},
+  extend: {
+    fontFamily: {
+      times: ["Times New Roman", "Times", "serif"],
+    },
   },
-  plugins: [],
 }
+}
+content: [
+ "./index.html",
+ "./src/**/*.{js,ts,jsx,tsx}"
+]
