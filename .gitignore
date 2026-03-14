@@ -1,1 +1,125 @@
+# ====================
+# BACKEND (Spring Boot)
+# ====================
+backend/HELP.md
+backend/target/
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd
+!backend/**/src/main/**/target/
+!backend/**/src/test/**/target/
+
+# Spring Tool Suite
+backend/.apt_generated
+backend/.classpath
+backend/.factorypath
+backend/.project
+backend/.settings
+backend/.springBeans
+backend/.sts4-cache
+
+# IntelliJ IDEA
+backend/.idea
+backend/*.iws
+backend/*.iml
+backend/*.ipr
+
+# NetBeans
+backend/nbproject/private/
+backend/nbbuild/
+backend/dist/
+backend/nbdist/
+backend/.nb-gradle/
+backend/build/
+!backend/**/src/main/**/build/
+!backend/**/src/test/**/build/
+
+# VS Code
+backend/.vscode/
+
+# ====================
+# FRONTEND (React/Vite)
+# ====================
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.vite/
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# Frontend logs
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/lerna-debug.log*
+
+# Frontend editor directories
+frontend/.vscode/*
+!frontend/.vscode/extensions.json
+frontend/.idea
+frontend/.DS_Store
+frontend/*.suo
+frontend/*.ntvs*
+frontend/*.njsproj
+frontend/*.sln
+frontend/*.sw?
+
+# ====================
+# DOCKER
+# ====================
+docker/data/
+docker/logs/
+*.sql.gz
+
+# ====================
+# GENERAL
+# ====================
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
+
+# Logs
+*.log
+logs/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+application-local.yml
+application-dev.yml
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE
 .vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+
+# Compiled files
+*.class
+*.jar
+*.war
+*.ear
+
+# Sensitive data
+secrets/
+credentials/
+*.pem
+*.key
+*.crt
