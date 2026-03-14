@@ -52,10 +52,17 @@ public class SkillService {
             throw new RuntimeException("User already has this skill");
         }
 
+        if (userId == null) {
+            throw new RuntimeException("User ID cannot be null");
+        }
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Skill skill = skillRepository.findById(request.getSkillId())
+        Long skillId = request.getSkillId();
+        if (skillId == null) {
+            throw new RuntimeException("Skill ID cannot be null");
+        }
+        Skill skill = skillRepository.findById(skillId)
                 .orElseThrow(() -> new RuntimeException("Skill not found"));
 
         UserSkill userSkill = new UserSkill();
@@ -73,6 +80,9 @@ public class SkillService {
 
     @Transactional
     public UserSkillResponse updateUserSkill(Long userId, Long userSkillId, UserSkillRequest request) {
+        if (userSkillId == null) {
+            throw new RuntimeException("User skill ID cannot be null");
+        }
         UserSkill userSkill = userSkillRepository.findById(userSkillId)
                 .orElseThrow(() -> new RuntimeException("User skill not found"));
 
