@@ -1,0 +1,80 @@
+spring:
+  application:
+    name: careeros-backend
+  
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/careeros_db
+    username: careeros_user
+    password: careeros_password
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: none 
+    show-sql: true
+    properties:
+      hibernate:
+        "[format_sql]": true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+  mail:
+    host: email-smtp.ap-south-1.amazonaws.com
+    port: 465
+    username: AKIAQF2QVTF56OJ36VCT
+    password: BCPKrTnp/SwlZM+6dQ7+P2E3E3kXO67aA60cyW7jcmsQ
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: false
+            required: false
+
+server: 
+  port: 8080
+  error:
+    include-message: always
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+jwt:
+  secret: careerOsSecretKeyForJwtTokenGenerationThatIsLongEnoughForHS256Algorithm
+  expiration: 86400000
+
+aws:
+  access-key: AKIAQF2QVTF5W6DQKC67
+  secret-key: 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
+  region: ap-south-1
+  s3:
+    bucket-name: careeros-resume
+
+nvidia:
+  api-key: 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
+
+app:
+  email:
+    from: mohini.dev04@gmail.com
+    frontend-url: http://localhost:5173
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
