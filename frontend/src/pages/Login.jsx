@@ -107,7 +107,7 @@ const Login = () => {
           type="checkbox"
           className="h-4 w-4 accent-crimson-900"
           />
-          <label htmlFor="remember-me" classNmae="ml-2 text-sm text-crimson-700">
+          <label htmlFor="remember-me" className="ml-2 text-sm text-crimson-700">
             Remember Me
           </label>
         </div>
