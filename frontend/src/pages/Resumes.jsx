@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 import api from "../services/api";
 
@@ -175,9 +176,16 @@ function ResumeRow({ resume, onDelete, onView }) {
 
 // ── Main Page ───────────────────────────────────────────────────────────────
 export default function Resumes() {
+  const navigate = useNavigate();
   const [resumes, setResumes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  // Autofill states
+  const [showAutofillPrompt, setShowAutofillPrompt] = useState(false);
+  const [autofilling, setAutofilling] = useState(false);
+  const [autofillSuccess, setAutofillSuccess] = useState(false);
+  const [uploadedResume, setUploadedResume] = useState(null);
 
   useEffect(() => { fetchResumes(); }, []);
 
@@ -195,6 +203,28 @@ export default function Resumes() {
 
   const handleUpload = (newResume) => {
     setResumes(prev => [newResume, ...prev]);
+    setUploadedResume({ id: newResume.id, filename: newResume.filename });
+    setShowAutofillPrompt(true);
+  };
+
+  const handleAutofill = async () => {
+    if (!uploadedResume?.id) return;
+    setShowAutofillPrompt(false);
+    setAutofilling(true);
+    try {
+      await api.post(`/profile/autofill?resumeId=${uploadedResume.id}`, null, {
+        timeout: 200000,
+      });
+      setAutofillSuccess(true);
+    } catch (e) {
+      if (e.code === 'ECONNABORTED' || e.message?.includes('timeout')) {
+        alert("Failed to extract profile details from resume: request timed out. The AI service is taking longer than expected. Please try again.");
+      } else {
+        alert(e.response?.data?.message || "Autofill failed. Please try again.");
+      }
+    } finally {
+      setAutofilling(false);
+    }
   };
 
   const handleDelete = async (id) => {
@@ -225,10 +255,146 @@ export default function Resumes() {
         .rp-count{font-family:'DM Mono',monospace;font-size:11px;padding:2px 7px;border-radius:20px;background:rgba(255,255,255,0.07);color:rgba(240,237,232,0.4);}
         .rp-spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(125,249,194,0.2);border-top-color:#7DF9C2;border-radius:50%;animation:rpspin .7s linear infinite;margin-right:8px;}
         @keyframes rpspin{to{transform:rotate(360deg)}}
+
+        /* Modal Styles */
+        .modal-overlay {
+          position: fixed;
+          inset: 0;
+          background: rgba(12, 12, 20, 0.85);
+          backdrop-filter: blur(8px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 500;
+          animation: fadeIn 0.25s ease-out;
+        }
+        .modal-content {
+          background: #13131F;
+          border: 1px solid rgba(125, 249, 194, 0.15);
+          box-shadow: 0 0 40px rgba(125, 249, 194, 0.05), 0 20px 40px rgba(0, 0, 0, 0.4);
+          border-radius: 20px;
+          padding: 32px;
+          width: 90%;
+          max-width: 440px;
+          text-align: center;
+          position: relative;
+          overflow: hidden;
+          animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .modal-content::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 4px;
+          background: linear-gradient(90deg, #7DF9C2, #4B8BFF);
+        }
+        .modal-icon {
+          font-size: 48px;
+          margin-bottom: 16px;
+          display: inline-block;
+          animation: float 2s ease-in-out infinite;
+        }
+        .modal-icon-success {
+          font-size: 32px;
+          color: #7DF9C2;
+          background: rgba(125, 249, 194, 0.1);
+          border: 1px solid rgba(125, 249, 194, 0.3);
+          width: 64px;
+          height: 64px;
+          border-radius: 50%;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 16px;
+        }
+        .modal-title {
+          font-family: 'Syne', sans-serif;
+          font-size: 20px;
+          font-weight: 800;
+          color: #F0EDE8;
+          margin-bottom: 12px;
+        }
+        .modal-text {
+          font-size: 14px;
+          color: rgba(240, 237, 232, 0.6);
+          line-height: 1.6;
+          margin-bottom: 24px;
+        }
+        .modal-actions {
+          display: flex;
+          gap: 12px;
+          justify-content: center;
+        }
+        .modal-btn {
+          flex: 1;
+          padding: 11px 22px;
+          border-radius: 10px;
+          font-size: 14px;
+          font-weight: 700;
+          cursor: pointer;
+          font-family: 'Syne', sans-serif;
+          transition: all 0.2s ease;
+          border: 1px solid;
+        }
+        .modal-btn-cancel {
+          background: rgba(255, 255, 255, 0.04);
+          border-color: rgba(255, 255, 255, 0.1);
+          color: rgba(240, 237, 232, 0.6);
+        }
+        .modal-btn-cancel:hover {
+          background: rgba(255, 255, 255, 0.08);
+          border-color: rgba(255, 255, 255, 0.15);
+          color: #F0EDE8;
+        }
+        .modal-btn-confirm {
+          background: linear-gradient(135deg, rgba(125, 249, 194, 0.15) 0%, rgba(75, 139, 255, 0.1) 100%);
+          border-color: rgba(125, 249, 194, 0.3);
+          color: #7DF9C2;
+        }
+        .modal-btn-confirm:hover {
+          background: linear-gradient(135deg, rgba(125, 249, 194, 0.25) 0%, rgba(75, 139, 255, 0.18) 100%);
+          border-color: rgba(125, 249, 194, 0.5);
+          box-shadow: 0 0 16px rgba(125, 249, 194, 0.15);
+        }
+        .modal-spinner {
+          width: 48px;
+          height: 48px;
+          border: 3px solid rgba(125, 249, 194, 0.1);
+          border-top-color: #7DF9C2;
+          border-radius: 50%;
+          animation: modalSpin 0.8s linear infinite;
+          margin: 0 auto 20px auto;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(12px) scale(0.98); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes modalSpin {
+          to { transform: rotate(360deg); }
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-6px); }
+        }
       `}</style>
 
       <div className="rp">
         <div className="rp-inner">
+          <button 
+            onClick={() => window.history.back()}
+            className="mb-6 flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-[#7DF9C2] transition-colors group"
+          >
+            <svg className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Dashboard
+          </button>
           <div className="rp-header">
             <div className="rp-title">Resumes</div>
           </div>
@@ -262,6 +428,58 @@ export default function Resumes() {
           }
         </div>
       </div>
+
+      {showAutofillPrompt && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <span className="modal-icon">✨</span>
+            <h3 className="modal-title">Autofill Profile?</h3>
+            <p className="modal-text">
+              Do you want to fill your profile section and skills in fill profile section using AI analysis of your uploaded resume "<strong>{uploadedResume?.filename}</strong>"?
+            </p>
+            <div className="modal-actions">
+              <button className="modal-btn modal-btn-cancel" onClick={() => setShowAutofillPrompt(false)}>
+                No, Thanks
+              </button>
+              <button className="modal-btn modal-btn-confirm" onClick={handleAutofill}>
+                Yes, Autofill
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {autofilling && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-spinner" />
+            <h3 className="modal-title">Analyzing Resume...</h3>
+            <p className="modal-text">
+              Our AI is parsing your resume to extract skills, experience, and profile details. This might take a few seconds.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {autofillSuccess && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <span className="modal-icon-success">✓</span>
+            <h3 className="modal-title">Autofill Complete!</h3>
+            <p className="modal-text">
+              Your profile details and skills have been successfully updated from your resume.
+            </p>
+            <div className="modal-actions">
+              <button className="modal-btn modal-btn-cancel" onClick={() => setAutofillSuccess(false)}>
+                Close
+              </button>
+              <button className="modal-btn modal-btn-confirm" onClick={() => navigate("/profile")}>
+                View Profile
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

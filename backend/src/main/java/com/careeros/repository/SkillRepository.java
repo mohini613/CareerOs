@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 public interface SkillRepository extends JpaRepository<Skill, Long> {
     Optional<Skill> findByName(String name);
+    Optional<Skill> findByNameIgnoreCase(String name);
     List<Skill> findByCategory(String category);
     List<Skill> findByCategoryOrderByNameAsc(String category);
 }

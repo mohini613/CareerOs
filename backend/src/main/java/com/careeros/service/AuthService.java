@@ -40,9 +40,11 @@ public class AuthService {
         User savedUser = userRepository.save(user);
         
         String token = jwtUtil.generateToken(savedUser.getEmail(), savedUser.getId());
+        String refreshToken = jwtUtil.generateRefreshToken(savedUser.getEmail(), savedUser.getId());
         
         return new AuthResponse(
             token,
+            refreshToken,
             savedUser.getId(),
             savedUser.getEmail(),
             savedUser.getFirstName(),
@@ -67,9 +69,33 @@ public class AuthService {
         userRepository.save(user);
         
         String token = jwtUtil.generateToken(user.getEmail(), user.getId());
+        String refreshToken = jwtUtil.generateRefreshToken(user.getEmail(), user.getId());
         
         return new AuthResponse(
             token,
+            refreshToken,
+            user.getId(),
+            user.getEmail(),
+            user.getFirstName(),
+            user.getLastName()
+        );
+    }
+
+    public AuthResponse refreshToken(String refreshToken) {
+        if (!jwtUtil.validateToken(refreshToken)) {
+            throw new RuntimeException("Invalid refresh token");
+        }
+
+        String email = jwtUtil.getEmailFromToken(refreshToken);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        String newToken = jwtUtil.generateToken(user.getEmail(), user.getId());
+        String newRefreshToken = jwtUtil.generateRefreshToken(user.getEmail(), user.getId());
+
+        return new AuthResponse(
+            newToken,
+            newRefreshToken,
             user.getId(),
             user.getEmail(),
             user.getFirstName(),

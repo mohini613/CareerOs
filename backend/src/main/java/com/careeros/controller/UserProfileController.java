@@ -35,6 +35,16 @@ public class UserProfileController {
         return ResponseEntity.ok(profile);
     }
 
+    @PostMapping("/autofill")
+    public ResponseEntity<UserProfileResponse> autofillFromResume(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestParam("resumeId") Long resumeId
+    ) {
+        Long userId = getUserIdFromToken(authHeader);
+        UserProfileResponse profile = userProfileService.autofillFromResume(userId, resumeId);
+        return ResponseEntity.ok(profile);
+    }
+
     private Long getUserIdFromToken(String authHeader) {
         String token = authHeader.substring(7);
         return jwtUtil.getUserIdFromToken(token);

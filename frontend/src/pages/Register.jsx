@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { SparklesCore } from "../components/ui/sparkles";
+
 const Register = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -37,94 +38,154 @@ const Register = () => {
   };
 
   return (
-<div className="h-screen relative flex items-center justify-center overflow-hidden bg-black">
+    <div className="h-screen relative flex items-center justify-center overflow-hidden bg-[#0C0C14] font-sans">
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap');
+        .reg-card { 
+          background: rgba(255, 255, 255, 0.03); 
+          backdrop-filter: blur(20px); 
+          border: 1px solid rgba(255, 255, 255, 0.07); 
+          border-radius: 24px; 
+          padding: 32px; 
+          width: 100%; 
+          max-width: 440px;
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .reg-input {
+          width: 100%;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 12px;
+          padding: 10px 14px;
+          color: white;
+          outline: none;
+          transition: all 0.2s;
+          font-size: 14px;
+        }
+        .reg-input:focus {
+          border-color: #7DF9C2;
+          background: rgba(255, 255, 255, 0.08);
+        }
+        .reg-btn {
+          width: 100%;
+          background: #7DF9C2;
+          color: #0C0C14;
+          font-weight: 800;
+          font-family: 'Syne', sans-serif;
+          padding: 14px;
+          border-radius: 12px;
+          transition: all 0.2s;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          font-size: 14px;
+        }
+        .reg-btn:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 0 20px rgba(125, 249, 194, 0.3);
+        }
+        .reg-btn:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      `}</style>
+      
+      <div className="absolute inset-0">
+        <SparklesCore
+          background="transparent"
+          minSize={0.5}
+          maxSize={1.2}
+          particleDensity={120}
+          className="w-full h-full"
+          particleColor="#7DF9C2"
+          speed={1}
+        />
+      </div>
 
-  <div className="absolute inset-0">
-    <SparklesCore
-      background="transparent"
-      minSize={0.5}
-      maxSize={1.2}
-      particleDensity={120}
-      className="w-full h-full"
-      particleColor="#faf4f4"
-      speed={1}
-    />
-  </div>
-
-  <div className="relative z-20 max-w-md w-full space-y-8">      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-6xl font-bold text-white font-times">
-  CareerOS
-</h2>
-          <p className="mt-2 text-center text-1xl font text-white font-times">
-            Create your account
-          </p>
+      <div className="relative z-20">
+        <div className="mb-6 text-center">
+          <h1 className="text-4xl font-extrabold font-['Syne'] text-white tracking-tighter mb-1">
+            Career<span className="text-[#7DF9C2]">OS</span>
+          </h1>
+          <p className="text-white/40 font-medium text-sm">Join the next generation of professionals</p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && (
-            <div className="rounded-md bg-red-50 p-4">
-              <p className="text-sm text-red-800">{error}</p>
-            </div>
-          )}
-          <div className="space-y-3">
+
+        <div className="reg-card">
+          <h2 className="text-lg font-bold font-['Syne'] text-white mb-5">Create Account</h2>
+          
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            {error && (
+              <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium">
+                ⚠ {error}
+              </div>
+            )}
+            
             <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-white/40 ml-1">First Name</label>
+                <input
+                  name="firstName"
+                  type="text"
+                  required
+                  className="reg-input"
+                  placeholder="John"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-white/40 ml-1">Last Name</label>
+                <input
+                  name="lastName"
+                  type="text"
+                  required
+                  className="reg-input"
+                  placeholder="Doe"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-[10px] font-bold uppercase tracking-wider text-white/40 ml-1">Email Address</label>
               <input
-                name="firstName"
-                type="text"
+                name="email"
+                type="email"
                 required
-                className="px-3 py-2 border border-gray-300 placeholder-white-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="First name"
-                value={formData.firstName}
-                onChange={handleChange}
-              />
-              <input
-                name="lastName"
-                type="text"
-                required
-                className="px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Last name"
-                value={formData.lastName}
+                className="reg-input"
+                placeholder="name@example.com"
+                value={formData.email}
                 onChange={handleChange}
               />
             </div>
-            <input
-              name="email"
-              type="email"
-              required
-              className="w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="Email address"
-              value={formData.email}
-              onChange={handleChange}
-            />
-            <input
-              name="password"
-              type="password"
-              required
-              minLength={8}
-              className="w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="Password (min 8 characters)"
-              value={formData.password}
-              onChange={handleChange}
-            />
-          </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none disabled:bg-indigo-400"
-          >
-            {loading ? 'Creating account...' : 'Sign up'}
-          </button>
+            <div className="space-y-1">
+              <label className="text-[10px] font-bold uppercase tracking-wider text-white/40 ml-1">Password</label>
+              <input
+                name="password"
+                type="password"
+                required
+                minLength={8}
+                className="reg-input"
+                placeholder="Min. 8 characters"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </div>
 
-          <div className="text-center">
-            <Link to="/login" className="font-medium text-white hover:text-indigo-500">
-              Already have an account? Sign in
-            </Link>
-          </div>
-        </form>
+            <button type="submit" disabled={loading} className="reg-btn mt-4">
+              {loading ? 'Creating Account...' : 'Get Started'}
+            </button>
+
+            <div className="pt-4 text-center">
+              <Link to="/login" className="text-sm font-medium text-white/40 hover:text-[#7DF9C2] transition-colors">
+                Already have an account? <span className="text-[#7DF9C2]">Sign In</span>
+              </Link>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
   );
 };
 

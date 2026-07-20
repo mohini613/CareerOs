@@ -35,17 +35,37 @@ export default function Profile() {
   useEffect(() => { fetchAll(); }, []);
 
   const fetchAll = async () => {
-    setLoading(true); setError("");
+    setLoading(true);
+    setError("");
     try {
-      try {
-        const res = await api.get("/profile");
-        const p = res.data;
-        setProfile(p);
-        setDraft({ currentTitle:p.currentTitle||"", currentCompany:p.currentCompany||"", industry:p.industry||"", educationLevel:p.educationLevel||"", location:p.location||"", bio:p.bio||"", linkdinUrl:p.linkedinUrl||"", githubUrl:p.githubUrl||"", portfolioUrl:p.portfolioUrl||"", currentSalary:p.currentSalary||"" });
-      } catch { setProfile(null); }
-      try { const r = await api.get("/skills/my-skills"); setSkills(r.data); } catch { setSkills([]); }
-      try { const r = await api.get("/skills"); setAllSkills(r.data); } catch { setAllSkills([]); }
-    } finally { setLoading(false); }
+      const profileRes = await api.get("/profile");
+      const p = profileRes.data;
+      setProfile(p);
+      setDraft({
+        currentTitle: p.currentTitle || "",
+        currentCompany: p.currentCompany || "",
+        industry: p.industry || "",
+        educationLevel: p.educationLevel || "",
+        location: p.location || "",
+        bio: p.bio || "",
+        linkdinUrl: p.linkedinUrl || "",
+        githubUrl: p.githubUrl || "",
+        portfolioUrl: p.portfolioUrl || "",
+        currentSalary: p.currentSalary || ""
+      });
+
+      const skillsRes = await api.get("/skills/my-skills");
+      setSkills(skillsRes.data);
+
+      const allSkillsRes = await api.get("/skills");
+      setAllSkills(allSkillsRes.data);
+    } catch (e) {
+      if (e.response?.status !== 401) {
+        setError("Failed to load profile data.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const set = (k, v) => setDraft(d => ({ ...d, [k]: v }));
@@ -172,6 +192,15 @@ export default function Profile() {
 
       <div className="pp">
         <div className="pp-inner">
+          <button 
+            onClick={() => window.history.back()}
+            className="mb-6 flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-[#7DF9C2] transition-colors group"
+          >
+            <svg className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Dashboard
+          </button>
           {loading ? (
             <div className="pp-loading"><span className="pp-spinner" />Loading profile…</div>
           ) : (

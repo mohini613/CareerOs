@@ -212,6 +212,15 @@ export default function AIAnalyzer() {
 
       <div className="aa">
         <div className="aa-inner">
+          <button 
+            onClick={() => window.history.back()}
+            className="mb-6 flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-[#7DF9C2] transition-colors group"
+          >
+            <svg className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Dashboard
+          </button>
           <div className="aa-title">✦ AI Job Analyzer</div>
           <div className="aa-sub">Select your resume, paste a job description → get your match score and AI suggestions</div>
 

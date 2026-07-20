@@ -1,4 +1,3 @@
-
 package com.careeros.model;
 
 import jakarta.persistence.*;
@@ -39,6 +38,42 @@ public class AnalysisResult {
 
     @Column(name = "match_score")
     private Integer matchScore;
+
+    @Column(name = "ats_friendly")
+    private Boolean atsFriendly;
+
+    @Column(name = "hard_skills_found", columnDefinition = "TEXT")
+    private String hardSkillsFound;
+
+    @Column(name = "hard_skills_missing", columnDefinition = "TEXT")
+    private String hardSkillsMissing;
+
+    @Column(name = "soft_skills_found", columnDefinition = "TEXT")
+    private String softSkillsFound;
+
+    @Column(name = "soft_skills_missing", columnDefinition = "TEXT")
+    private String softSkillsMissing;
+
+    @Column(name = "experience_match", columnDefinition = "TEXT")
+    private String experienceMatch;
+
+    @Column(name = "education_match")
+    private Boolean educationMatch;
+
+    @Column(name = "keyword_density", columnDefinition = "TEXT")
+    private String keywordDensity;
+
+    @Column(name = "resume_improvements", columnDefinition = "TEXT")
+    private String resumeImprovements;
+
+    @Column(name = "cover_letter_points", columnDefinition = "TEXT")
+    private String coverLetterPoints;
+
+    @Column(name = "interview_questions", columnDefinition = "TEXT")
+    private String interviewQuestions;
+
+    @Column(name = "overall_verdict", columnDefinition = "TEXT")
+    private String overallVerdict;
 
     @Column(columnDefinition = "TEXT")
     private String strengths;
